@@ -46,11 +46,19 @@
             toolStripMenuItem3 = new ToolStripMenuItem();
             ToolStripMenuItemUnderline = new ToolStripMenuItem();
             toolStripMenuItem4 = new ToolStripMenuItem();
+            ToolStripMenuItemDelete = new ToolStripMenuItem();
             ColorDialogForeground = new ColorDialog();
             PictureBoxTemplate = new PictureBox();
+            ContextMenuStripImage = new ContextMenuStrip(components);
+            ToolStripTextBoxWidth = new ToolStripTextBox();
+            ToolStripTextBoxHeight = new ToolStripTextBox();
+            ToolStripMenuItemDeleteImg = new ToolStripMenuItem();
+            ToolStripMenuItemProportional = new ToolStripMenuItem();
+            toolStripMenuItem5 = new ToolStripMenuItem();
             PanelItems.SuspendLayout();
             ContextMenuStripFont.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PictureBoxTemplate).BeginInit();
+            ContextMenuStripImage.SuspendLayout();
             SuspendLayout();
             // 
             // PanelItems
@@ -94,6 +102,7 @@
             ButtonAddImage.TabIndex = 3;
             ButtonAddImage.Text = "Добавить изображение";
             ButtonAddImage.UseVisualStyleBackColor = true;
+            ButtonAddImage.Click += ButtonAddImage_Click;
             // 
             // ButtonSave
             // 
@@ -129,7 +138,7 @@
             // 
             // ContextMenuStripFont
             // 
-            ContextMenuStripFont.Items.AddRange(new ToolStripItem[] { ToolStripTextBoxText, ToolStripTextBoxFontSize, ToolStripComboBoxFontFamily, ToolStripMenuItemForeColor, ToolStripMenuItemBold, ToolStripMenuItemItalic, ToolStripMenuItemUnderline });
+            ContextMenuStripFont.Items.AddRange(new ToolStripItem[] { ToolStripTextBoxText, ToolStripTextBoxFontSize, ToolStripComboBoxFontFamily, ToolStripMenuItemForeColor, ToolStripMenuItemBold, ToolStripMenuItemItalic, ToolStripMenuItemUnderline, ToolStripMenuItemDelete });
             ContextMenuStripFont.Name = "ContextMenuStripFont";
             ContextMenuStripFont.Size = new Size(182, 191);
             ContextMenuStripFont.Closed += ContextMenuStripFont_Closed;
@@ -166,7 +175,7 @@
             // 
             toolStripMenuItem2.Enabled = false;
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(180, 22);
+            toolStripMenuItem2.Size = new Size(67, 22);
             // 
             // ToolStripMenuItemBold
             // 
@@ -213,6 +222,13 @@
             toolStripMenuItem4.Name = "toolStripMenuItem4";
             toolStripMenuItem4.Size = new Size(67, 22);
             // 
+            // ToolStripMenuItemDelete
+            // 
+            ToolStripMenuItemDelete.Name = "ToolStripMenuItemDelete";
+            ToolStripMenuItemDelete.Size = new Size(181, 22);
+            ToolStripMenuItemDelete.Text = "Удалить";
+            ToolStripMenuItemDelete.Click += ToolStripMenuItemDelete_Click;
+            // 
             // PictureBoxTemplate
             // 
             PictureBoxTemplate.BackgroundImageLayout = ImageLayout.Zoom;
@@ -221,6 +237,46 @@
             PictureBoxTemplate.Size = new Size(800, 600);
             PictureBoxTemplate.TabIndex = 2;
             PictureBoxTemplate.TabStop = false;
+            // 
+            // ContextMenuStripImage
+            // 
+            ContextMenuStripImage.Items.AddRange(new ToolStripItem[] { ToolStripTextBoxWidth, ToolStripTextBoxHeight, ToolStripMenuItemDeleteImg, ToolStripMenuItemProportional });
+            ContextMenuStripImage.Name = "ContextMenuStipImage";
+            ContextMenuStripImage.Size = new Size(181, 120);
+            ContextMenuStripImage.Closed += ContextMenuStripImage_Closed;
+            // 
+            // ToolStripTextBoxWidth
+            // 
+            ToolStripTextBoxWidth.Name = "ToolStripTextBoxWidth";
+            ToolStripTextBoxWidth.Size = new Size(100, 23);
+            ToolStripTextBoxWidth.Text = "Ширина";
+            // 
+            // ToolStripTextBoxHeight
+            // 
+            ToolStripTextBoxHeight.Name = "ToolStripTextBoxHeight";
+            ToolStripTextBoxHeight.Size = new Size(100, 23);
+            ToolStripTextBoxHeight.Text = "Высота";
+            // 
+            // ToolStripMenuItemDeleteImg
+            // 
+            ToolStripMenuItemDeleteImg.Name = "ToolStripMenuItemDeleteImg";
+            ToolStripMenuItemDeleteImg.Size = new Size(180, 22);
+            ToolStripMenuItemDeleteImg.Text = "Удалить";
+            ToolStripMenuItemDeleteImg.Click += ToolStripMenuItemDeleteImg_Click;
+            // 
+            // ToolStripMenuItemProportional
+            // 
+            ToolStripMenuItemProportional.CheckOnClick = true;
+            ToolStripMenuItemProportional.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem5 });
+            ToolStripMenuItemProportional.Name = "ToolStripMenuItemProportional";
+            ToolStripMenuItemProportional.Size = new Size(180, 22);
+            ToolStripMenuItemProportional.Text = "Пропорционально";
+            // 
+            // toolStripMenuItem5
+            // 
+            toolStripMenuItem5.Enabled = false;
+            toolStripMenuItem5.Name = "toolStripMenuItem5";
+            toolStripMenuItem5.Size = new Size(67, 22);
             // 
             // TemplateEditorForm
             // 
@@ -239,6 +295,8 @@
             ContextMenuStripFont.ResumeLayout(false);
             ContextMenuStripFont.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)PictureBoxTemplate).EndInit();
+            ContextMenuStripImage.ResumeLayout(false);
+            ContextMenuStripImage.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -263,5 +321,12 @@
         private ToolStripMenuItem toolStripMenuItem3;
         private ToolStripMenuItem ToolStripMenuItemUnderline;
         private ToolStripMenuItem toolStripMenuItem4;
+        private ToolStripMenuItem ToolStripMenuItemDelete;
+        private ContextMenuStrip ContextMenuStripImage;
+        private ToolStripMenuItem ToolStripMenuItemDeleteImg;
+        private ToolStripTextBox ToolStripTextBoxWidth;
+        private ToolStripTextBox ToolStripTextBoxHeight;
+        private ToolStripMenuItem ToolStripMenuItemProportional;
+        private ToolStripMenuItem toolStripMenuItem5;
     }
 }

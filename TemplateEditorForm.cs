@@ -4,26 +4,27 @@ namespace MemeGenerator
 {
     public partial class TemplateEditorForm : Form
     {
-        // TODO: добавление изображений на шаблон
-        // TODO: вероятно, есть очень высокие, но узкие изображения, тогда изменение также ширины.
-        /// <summary>
-        /// Максимальная ширина для изображений.
-        /// </summary>
-        new const int Width = 800;
         /// <summary>
         /// Максимально допустимая ширина изображений.
         /// </summary>
-        const int MaxWidth = 600;
+        const int MaxWidth = 800;
+        /// <summary>
+        /// Максимально допустимая высота изображений.
+        /// </summary>
+        const int MaxHeight = 600;
         /// <summary>
         /// Шрифт 
         /// </summary>
-        static Font? font; // чтобы не создавать переменную каждый раз при установке шрифта.
+        static Font? font; 
 
         public TemplateEditorForm(string imagePath)
         {
             InitializeComponent();
             PictureBoxTemplate.Image = new Bitmap(imagePath);
-            if (PictureBoxTemplate.Image.Width > MaxWidth) ResizeImage();
+            if (PictureBoxTemplate.Image.Width > MaxWidth)
+            {
+                PictureBoxTemplate.Image = ProportionalResize(PictureBoxTemplate.Image, Width);
+            }
             LoadSystemFonts();
         }
 
@@ -48,13 +49,52 @@ namespace MemeGenerator
         void ContextMenuStripFont_Closed(object sender, ToolStripDropDownClosedEventArgs e) => TextSet();
 
         /// <summary>
+        /// Обработчик события закрытия контекстного меню изображения.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ContextMenuStripImage_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        {
+            if (ContextMenuStripImage.SourceControl is PictureBox pb)
+            {
+                // если получилось считать значение из TextBox-а ширины
+                if (int.TryParse(ToolStripTextBoxWidth.Text, out var w))
+                {
+                    if (ToolStripMenuItemProportional.Checked) // если выбрано пропорционально
+                    {
+                        if (w <= MaxWidth)
+                        {
+                            pb.Image = ProportionalResize(pb.Image, w);
+                            pb.Size = pb.Image.Size;
+                        }
+                    }
+                    else // иначе, применить размеры пользователя
+                    {
+                        // если получилось считать значение из TextBox-а высоты
+                        if (int.TryParse(ToolStripTextBoxHeight.Text, out var h))
+                        {
+                            if (w <= MaxWidth && h <= MaxHeight)
+                            {
+                                pb.Image = new Bitmap(pb.Image, new Size(w, h));
+                                pb.Size = pb.Image.Size;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Обработчик события добавления текста на шаблон.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void ButtonAddText_Click(object sender, EventArgs e)
         {
-            var lb = new Label // создание экземпляра метки с привязкой к ней контекстного меню
+            // создание экземпляра label-а с привязкой к нему контекстного меню
+            // то есть для каждого label-а - свое контекстное меню,
+            // которое будет менять параметры только у своего инициатора.
+            var lb = new Label
             {
                 Text = "Текст",
                 Font = font,
@@ -68,11 +108,68 @@ namespace MemeGenerator
         }
 
         /// <summary>
+        /// Обработчик события удаления текста.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ToolStripMenuItemDelete_Click(object sender, EventArgs e)
+        {
+            // получение источника (label-а), к которому привязано контекстное меню
+            if (ContextMenuStripFont.SourceControl is Label pb)
+            {
+                pb.Dispose(); // удаление источника
+            }
+        }
+
+        /// <summary>
+        /// Обработчик события добавления изображения.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ButtonAddImage_Click(object sender, EventArgs e)
+        {
+            // аналогично добавлению текста
+            var ofd = new OpenFileDialog
+            {
+                Filter = "Файлы изображений|*.jpg;*.png;*.jpeg"
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                var pb = new PictureBox
+                {
+                    Image = new Bitmap(ofd.FileName),
+                    ContextMenuStrip = ContextMenuStripImage
+                };
+
+                // изменение размеров изображения
+                pb.Image = ProportionalResize(pb.Image, 120); // 120 - просто стартовое значение
+                pb.Size = pb.Image.Size; // размеры picture box = размерам подогнанного изображения
+                ControlExtension.Draggable(pb, true); // аналогично тексту
+                PictureBoxTemplate.Controls.Add(pb);
+            }
+        }
+
+        /// <summary>
+        /// Обработчик события удаления изображения.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItemDeleteImg_Click(object sender, EventArgs e)
+        {
+            // аналогично удалению текста
+            if (ContextMenuStripImage.SourceControl is PictureBox source)
+            {
+                source.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Обработчик события сохранения шаблона.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ButtonSave_Click(object sender, EventArgs e)
+        void ButtonSave_Click(object sender, EventArgs e)
         {
             var mbr = MessageBox.Show
             (
@@ -96,11 +193,20 @@ namespace MemeGenerator
 
                 using var graphics = Graphics.FromImage(PictureBoxTemplate.Image!);
 
-                foreach (Label item in PictureBoxTemplate.Controls) // перебор всех элементов PictureBox
+                foreach (var item in PictureBoxTemplate.Controls) // перебор всех элементов PictureBox
                 {
-                    // рисование текста на изображении, с указанным шрифтом, цветом и позицией.
-                    graphics.DrawString(item.Text, item.Font, new SolidBrush(item.ForeColor), item.Location);
+                    if (item is Label lb)
+                    {
+                        // рисование текста на выходном изображении, с указанным шрифтом, цветом и позицией.
+                        graphics.DrawString(lb.Text, lb.Font, new SolidBrush(lb.ForeColor), lb.Location);
+                    }
+                    else if (item is PictureBox pb)
+                    {
+                        // рисование изображения на выходном изображении.
+                        graphics.DrawImage(pb.Image, pb.Location.X, pb.Location.Y, pb.Image.Width, pb.Image.Height);
+                    }
                 }
+
 
                 SaveWithFormat(sfd);
             }
@@ -141,6 +247,26 @@ namespace MemeGenerator
             Application.Exit();
         }
 
+        // обработчики для реализации поведения RadioButton-ов у кнопок стилей шрифта, контекстного меню
+        // поскольку, одновременно может быть установлен только один стиль.
+        void ToolStripMenuItemBold_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItemItalic.Checked = false;
+            ToolStripMenuItemUnderline.Checked = false;
+        }
+
+        void ToolStripMenuItemItalic_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItemBold.Checked = false;
+            ToolStripMenuItemUnderline.Checked = false;
+        }
+
+        void ToolStripMenuItemUnderline_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItemBold.Checked = false;
+            ToolStripMenuItemItalic.Checked = false;
+        }
+
         #endregion
 
         #region Методы.
@@ -150,8 +276,7 @@ namespace MemeGenerator
         /// </summary>
         void TextSet()
         {
-            // получение источника (label-а), к которому привязано контекстное меню:
-
+            // получение источника (label-а), к которому привязано контекстное меню
             if (ContextMenuStripFont.SourceControl is Label source)
             {
                 try // чтобы не было исключений при неправильных параметрах контекстного меню
@@ -170,6 +295,7 @@ namespace MemeGenerator
         /// </summary>
         void FontSet()
         {
+            // в зависимости от выбранного стиля шрифта - создать шрифт с таким стилем.
             if (ToolStripMenuItemBold.Checked)
             {
                 font = new Font
@@ -219,25 +345,17 @@ namespace MemeGenerator
         }
 
         /// <summary>
-        /// Подгоняет изображение до максимальных размеров PictureBox.
-        /// </summary>
-        void ResizeImage()
-        {
-            PictureBoxTemplate.Image = new Bitmap(PictureBoxTemplate.Image, ProportionalResize());
-        }
-
-        /// <summary>
         /// Пропорционально изменяет размеры изображения.
         /// </summary>
         /// <param name="size"></param>
         /// <param name="newW"></param>
         /// <returns></returns>
-        Size ProportionalResize()
+        static Bitmap ProportionalResize(Image img, int newW)
         {
             // ширина - константа и равна 800 (ширина PictureBox);
             // высоту нужно пропорционально изменить, относительно ширины, формула:
             // новая высота = исходная высота * новая ширина / исходная ширина
-            return new Size(Width, PictureBoxTemplate.Image.Height * Width / PictureBoxTemplate.Image.Width);
+            return new Bitmap(img, new Size(newW, img.Size.Height * newW / img.Size.Width));
         }
 
         /// <summary>
@@ -277,23 +395,5 @@ namespace MemeGenerator
         }
 
         #endregion
-
-        private void ToolStripMenuItemBold_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItemItalic.Checked = false;
-            ToolStripMenuItemUnderline.Checked = false;
-        }
-
-        private void ToolStripMenuItemItalic_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItemBold.Checked = false;
-            ToolStripMenuItemUnderline.Checked = false;
-        }
-
-        private void ToolStripMenuItemUnderline_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItemBold.Checked = false;
-            ToolStripMenuItemItalic.Checked = false;
-        }
     }
 }
