@@ -5,26 +5,14 @@ namespace MemeGenerator
     public partial class TemplateEditorForm : Form
     {
         /// <summary>
-        /// Максимально допустимая ширина изображений.
-        /// </summary>
-        const int MaxWidth = 800;
-        /// <summary>
-        /// Максимально допустимая высота изображений.
-        /// </summary>
-        const int MaxHeight = 600;
-        /// <summary>
         /// Шрифт 
         /// </summary>
-        static Font? font; 
+        static Font? font;
 
         public TemplateEditorForm(string imagePath)
         {
             InitializeComponent();
-            PictureBoxTemplate.Image = new Bitmap(imagePath);
-            if (PictureBoxTemplate.Image.Width > MaxWidth)
-            {
-                PictureBoxTemplate.Image = ProportionalResize(PictureBoxTemplate.Image, MaxWidth);
-            }
+            PictureBoxTemplate.ScaleImage(new Bitmap(imagePath));
             LoadSystemFonts();
         }
 
@@ -60,24 +48,12 @@ namespace MemeGenerator
                 // если получилось считать значение из TextBox-а ширины
                 if (int.TryParse(ToolStripTextBoxWidth.Text, out var w))
                 {
-                    if (ToolStripMenuItemProportional.Checked) // если выбрано пропорционально
+                    if (int.TryParse(ToolStripTextBoxHeight.Text, out var h))
                     {
-                        if (w <= MaxWidth)
+                        if (w <= PictureBoxTemplate.Image.Width && h <= PictureBoxTemplate.Image.Height)
                         {
-                            pb.Image = ProportionalResize(pb.Image, w);
-                            pb.Size = pb.Image.Size;
-                        }
-                    }
-                    else // иначе, применить размеры пользователя
-                    {
-                        // если получилось считать значение из TextBox-а высоты
-                        if (int.TryParse(ToolStripTextBoxHeight.Text, out var h))
-                        {
-                            if (w <= MaxWidth && h <= MaxHeight)
-                            {
-                                pb.Image = new Bitmap(pb.Image, new Size(w, h));
-                                pb.Size = pb.Image.Size;
-                            }
+                            pb.ClientSize = new Size(w, h);
+
                         }
                     }
                 }
@@ -139,12 +115,9 @@ namespace MemeGenerator
                 var pb = new PictureBox
                 {
                     Image = new Bitmap(ofd.FileName),
-                    ContextMenuStrip = ContextMenuStripImage
+                    ContextMenuStrip = ContextMenuStripImage,
+                    SizeMode = PictureBoxSizeMode.StretchImage
                 };
-
-                // изменение размеров изображения
-                pb.Image = ProportionalResize(pb.Image, 120); // 120 - просто стартовое значение
-                pb.Size = pb.Image.Size; // размеры picture box = размерам подогнанного изображения
                 ControlExtension.Draggable(pb, true); // аналогично тексту
                 PictureBoxTemplate.Controls.Add(pb);
             }
@@ -191,7 +164,7 @@ namespace MemeGenerator
                 // получение объекта Graphics из изображения PictureBox, который представляет собой GDI+ объект,
                 // то есть поверхность для рисования.
 
-                using var graphics = Graphics.FromImage(PictureBoxTemplate.Image!);
+                using var graphics = Graphics.FromImage(PictureBoxTemplate.Image);
 
                 foreach (var item in PictureBoxTemplate.Controls) // перебор всех элементов PictureBox
                 {
@@ -203,10 +176,10 @@ namespace MemeGenerator
                     else if (item is PictureBox pb)
                     {
                         // рисование изображения на выходном изображении.
-                        graphics.DrawImage(pb.Image, pb.Location.X, pb.Location.Y, pb.Image.Width, pb.Image.Height);
+                        var scaled = pb.ScaledSize();
+                        graphics.DrawImage(pb.Image, pb.Location.X, pb.Location.Y, scaled.Width, scaled.Height);
                     }
                 }
-
 
                 SaveWithFormat(sfd);
             }

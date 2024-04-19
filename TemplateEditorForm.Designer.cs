@@ -242,7 +242,7 @@
             // 
             ContextMenuStripImage.Items.AddRange(new ToolStripItem[] { ToolStripTextBoxWidth, ToolStripTextBoxHeight, ToolStripMenuItemDeleteImg, ToolStripMenuItemProportional });
             ContextMenuStripImage.Name = "ContextMenuStipImage";
-            ContextMenuStripImage.Size = new Size(181, 120);
+            ContextMenuStripImage.Size = new Size(180, 98);
             ContextMenuStripImage.Closed += ContextMenuStripImage_Closed;
             // 
             // ToolStripTextBoxWidth
@@ -260,7 +260,7 @@
             // ToolStripMenuItemDeleteImg
             // 
             ToolStripMenuItemDeleteImg.Name = "ToolStripMenuItemDeleteImg";
-            ToolStripMenuItemDeleteImg.Size = new Size(180, 22);
+            ToolStripMenuItemDeleteImg.Size = new Size(179, 22);
             ToolStripMenuItemDeleteImg.Text = "Удалить";
             ToolStripMenuItemDeleteImg.Click += ToolStripMenuItemDeleteImg_Click;
             // 
@@ -269,7 +269,7 @@
             ToolStripMenuItemProportional.CheckOnClick = true;
             ToolStripMenuItemProportional.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem5 });
             ToolStripMenuItemProportional.Name = "ToolStripMenuItemProportional";
-            ToolStripMenuItemProportional.Size = new Size(180, 22);
+            ToolStripMenuItemProportional.Size = new Size(179, 22);
             ToolStripMenuItemProportional.Text = "Пропорционально";
             // 
             // toolStripMenuItem5
