@@ -2,8 +2,10 @@
 
 namespace MemeGenerator
 {
-    public partial class MemeEditorForm : Form
+    public partial class TemplateEditorForm : Form
     {
+        // TODO: добавление изображений на шаблон
+        // TODO: вероятно, есть очень высокие, но узкие изображения, тогда изменение также ширины.
         /// <summary>
         /// Максимальная ширина для изображений.
         /// </summary>
@@ -17,7 +19,7 @@ namespace MemeGenerator
         /// </summary>
         static Font? font; // чтобы не создавать переменную каждый раз при установке шрифта.
 
-        public MemeEditorForm(string imagePath)
+        public TemplateEditorForm(string imagePath)
         {
             InitializeComponent();
             PictureBoxTemplate.Image = new Bitmap(imagePath);
@@ -35,7 +37,7 @@ namespace MemeGenerator
         void ToolStripForeColor_Click(object sender, EventArgs e)
         {
             ColorDialogForeground.ShowDialog();
-            FontSet();
+            TextSet();
         }
 
         /// <summary>
@@ -43,7 +45,7 @@ namespace MemeGenerator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ContextMenuStripFont_Closed(object sender, ToolStripDropDownClosedEventArgs e) => FontSet();
+        void ContextMenuStripFont_Closed(object sender, ToolStripDropDownClosedEventArgs e) => TextSet();
 
         /// <summary>
         /// Обработчик события добавления текста на шаблон.
@@ -52,7 +54,7 @@ namespace MemeGenerator
         /// <param name="e"></param>
         void ButtonAddText_Click(object sender, EventArgs e)
         {
-            var lb = new Label
+            var lb = new Label // создание экземпляра метки с привязкой к ней контекстного меню
             {
                 Text = "Текст",
                 Font = font,
@@ -84,7 +86,7 @@ namespace MemeGenerator
 
             var sfd = new SaveFileDialog
             {
-                Filter = "(*.png)|*.png|(*.jpg)|*.jpg|(*.jpeg)|*.jpeg|(*.gif)|*.gif"
+                Filter = "(*.png)|*.png|(*.jpg)|*.jpg|(*.jpeg)|*.jpeg"
             };
 
             if (sfd.ShowDialog() == DialogResult.OK)
@@ -144,9 +146,9 @@ namespace MemeGenerator
         #region Методы.
 
         /// <summary>
-        /// Устанавливает настройки шрифта источника, в соответствии с параметрами контекстного меню.
+        /// Устанавливает настройки текста источника, в соответствии с параметрами контекстного меню.
         /// </summary>
-        void FontSet()
+        void TextSet()
         {
             // получение источника (label-а), к которому привязано контекстное меню:
 
@@ -154,12 +156,54 @@ namespace MemeGenerator
             {
                 try // чтобы не было исключений при неправильных параметрах контекстного меню
                 {
-                    font = new Font(ToolStripComboBoxFontFamily.Text, float.Parse(ToolStripTextBoxFontSize.Text));
+                    FontSet();
                     source.Font = font;
                     source.ForeColor = ColorDialogForeground.Color;
                     source.Text = ToolStripTextBoxText.Text;
                 }
                 catch (Exception) { }
+            }
+        }
+
+        /// <summary>
+        /// Устанавливает шрифт.
+        /// </summary>
+        void FontSet()
+        {
+            if (ToolStripMenuItemBold.Checked)
+            {
+                font = new Font
+                (
+                    ToolStripComboBoxFontFamily.Text,
+                    float.Parse(ToolStripTextBoxFontSize.Text),
+                    FontStyle.Bold
+                );
+            }
+            else if (ToolStripMenuItemItalic.Checked)
+            {
+                font = new Font
+                (
+                    ToolStripComboBoxFontFamily.Text,
+                    float.Parse(ToolStripTextBoxFontSize.Text),
+                    FontStyle.Italic
+                );
+            }
+            else if (ToolStripMenuItemUnderline.Checked)
+            {
+                font = new Font
+                (
+                    ToolStripComboBoxFontFamily.Text,
+                    float.Parse(ToolStripTextBoxFontSize.Text),
+                    FontStyle.Underline
+                );
+            }
+            else
+            {
+                font = new Font
+                (
+                    ToolStripComboBoxFontFamily.Text,
+                    float.Parse(ToolStripTextBoxFontSize.Text)
+                );
             }
         }
 
@@ -204,16 +248,16 @@ namespace MemeGenerator
         {
             var format = ImageFormat.Jpeg;
 
-            switch (sfd.Filter) // "свич" выбранного пользователем формата.
+            switch (sfd.FilterIndex) // "свич" выбранного пользователем формата.
             {
-                case ".jpg":
-                case ".jpeg":
-                    format = ImageFormat.Jpeg;
-                    break;
-                case ".png":
+                case 1:
                     format = ImageFormat.Png;
                     break;
-                case ".gif":
+                case 2:
+                case 3:
+                    format = ImageFormat.Jpeg;
+                    break;
+                case 4:
                     format = ImageFormat.Gif;
                     break;
             }
@@ -230,8 +274,26 @@ namespace MemeGenerator
             var mf = new MainForm();
             mf.Show();
             Hide();
-        } 
+        }
 
         #endregion
+
+        private void ToolStripMenuItemBold_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItemItalic.Checked = false;
+            ToolStripMenuItemUnderline.Checked = false;
+        }
+
+        private void ToolStripMenuItemItalic_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItemBold.Checked = false;
+            ToolStripMenuItemUnderline.Checked = false;
+        }
+
+        private void ToolStripMenuItemUnderline_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItemBold.Checked = false;
+            ToolStripMenuItemItalic.Checked = false;
+        }
     }
 }

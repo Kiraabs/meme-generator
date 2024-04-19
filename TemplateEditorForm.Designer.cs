@@ -1,6 +1,6 @@
 ﻿namespace MemeGenerator
 {
-    partial class MemeEditorForm
+    partial class TemplateEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -40,6 +40,12 @@
             ToolStripComboBoxFontFamily = new ToolStripComboBox();
             ToolStripMenuItemForeColor = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripMenuItem();
+            ToolStripMenuItemBold = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            ToolStripMenuItemItalic = new ToolStripMenuItem();
+            toolStripMenuItem3 = new ToolStripMenuItem();
+            ToolStripMenuItemUnderline = new ToolStripMenuItem();
+            toolStripMenuItem4 = new ToolStripMenuItem();
             ColorDialogForeground = new ColorDialog();
             PictureBoxTemplate = new PictureBox();
             PanelItems.SuspendLayout();
@@ -123,9 +129,9 @@
             // 
             // ContextMenuStripFont
             // 
-            ContextMenuStripFont.Items.AddRange(new ToolStripItem[] { ToolStripTextBoxText, ToolStripTextBoxFontSize, ToolStripComboBoxFontFamily, ToolStripMenuItemForeColor });
+            ContextMenuStripFont.Items.AddRange(new ToolStripItem[] { ToolStripTextBoxText, ToolStripTextBoxFontSize, ToolStripComboBoxFontFamily, ToolStripMenuItemForeColor, ToolStripMenuItemBold, ToolStripMenuItemItalic, ToolStripMenuItemUnderline });
             ContextMenuStripFont.Name = "ContextMenuStripFont";
-            ContextMenuStripFont.Size = new Size(182, 103);
+            ContextMenuStripFont.Size = new Size(182, 191);
             ContextMenuStripFont.Closed += ContextMenuStripFont_Closed;
             // 
             // ToolStripTextBoxText
@@ -160,8 +166,52 @@
             // 
             toolStripMenuItem2.Enabled = false;
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(67, 22);
-            toolStripMenuItem2.Visible = false;
+            toolStripMenuItem2.Size = new Size(180, 22);
+            // 
+            // ToolStripMenuItemBold
+            // 
+            ToolStripMenuItemBold.CheckOnClick = true;
+            ToolStripMenuItemBold.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
+            ToolStripMenuItemBold.Name = "ToolStripMenuItemBold";
+            ToolStripMenuItemBold.Size = new Size(181, 22);
+            ToolStripMenuItemBold.Text = "Жирный";
+            ToolStripMenuItemBold.Click += ToolStripMenuItemBold_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Enabled = false;
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(67, 22);
+            // 
+            // ToolStripMenuItemItalic
+            // 
+            ToolStripMenuItemItalic.CheckOnClick = true;
+            ToolStripMenuItemItalic.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem3 });
+            ToolStripMenuItemItalic.Name = "ToolStripMenuItemItalic";
+            ToolStripMenuItemItalic.Size = new Size(181, 22);
+            ToolStripMenuItemItalic.Text = "Курсив";
+            ToolStripMenuItemItalic.Click += ToolStripMenuItemItalic_Click;
+            // 
+            // toolStripMenuItem3
+            // 
+            toolStripMenuItem3.Enabled = false;
+            toolStripMenuItem3.Name = "toolStripMenuItem3";
+            toolStripMenuItem3.Size = new Size(67, 22);
+            // 
+            // ToolStripMenuItemUnderline
+            // 
+            ToolStripMenuItemUnderline.CheckOnClick = true;
+            ToolStripMenuItemUnderline.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem4 });
+            ToolStripMenuItemUnderline.Name = "ToolStripMenuItemUnderline";
+            ToolStripMenuItemUnderline.Size = new Size(181, 22);
+            ToolStripMenuItemUnderline.Text = "Подчекрнутый";
+            ToolStripMenuItemUnderline.Click += ToolStripMenuItemUnderline_Click;
+            // 
+            // toolStripMenuItem4
+            // 
+            toolStripMenuItem4.Enabled = false;
+            toolStripMenuItem4.Name = "toolStripMenuItem4";
+            toolStripMenuItem4.Size = new Size(67, 22);
             // 
             // PictureBoxTemplate
             // 
@@ -172,7 +222,7 @@
             PictureBoxTemplate.TabIndex = 2;
             PictureBoxTemplate.TabStop = false;
             // 
-            // MemeEditorForm
+            // TemplateEditorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -181,7 +231,7 @@
             Controls.Add(PanelItems);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
-            Name = "MemeEditorForm";
+            Name = "TemplateEditorForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Редактор";
             FormClosed += MemeEditorForm_FormClosed;
@@ -207,5 +257,11 @@
         private ToolStripTextBox ToolStripTextBoxText;
         private PictureBox PictureBoxTemplate;
         private Button ButtonBack;
+        private ToolStripMenuItem ToolStripMenuItemBold;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem ToolStripMenuItemItalic;
+        private ToolStripMenuItem toolStripMenuItem3;
+        private ToolStripMenuItem ToolStripMenuItemUnderline;
+        private ToolStripMenuItem toolStripMenuItem4;
     }
 }

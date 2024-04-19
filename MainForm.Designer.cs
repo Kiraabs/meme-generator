@@ -63,6 +63,7 @@
             ButtonTemplateSelect.TabIndex = 1;
             ButtonTemplateSelect.Text = "Выбрать шаблон мема";
             ButtonTemplateSelect.UseVisualStyleBackColor = true;
+            ButtonTemplateSelect.Click += ButtonTemplateSelect_Click;
             // 
             // LabelOR
             // 
@@ -87,6 +88,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Генератор мемов";
+            FormClosed += MainForm_FormClosed;
             ResumeLayout(false);
         }
 
