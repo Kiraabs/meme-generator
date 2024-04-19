@@ -23,7 +23,7 @@ namespace MemeGenerator
             PictureBoxTemplate.Image = new Bitmap(imagePath);
             if (PictureBoxTemplate.Image.Width > MaxWidth)
             {
-                PictureBoxTemplate.Image = ProportionalResize(PictureBoxTemplate.Image, Width);
+                PictureBoxTemplate.Image = ProportionalResize(PictureBoxTemplate.Image, MaxWidth);
             }
             LoadSystemFonts();
         }
