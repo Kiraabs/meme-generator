@@ -1,4 +1,4 @@
-﻿namespace meme_generator
+﻿namespace MemeGenerator
 {
     partial class MainForm
     {
