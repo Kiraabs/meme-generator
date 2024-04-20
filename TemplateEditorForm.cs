@@ -26,7 +26,6 @@ namespace MemeGenerator
         void ToolStripForeColor_Click(object sender, EventArgs e)
         {
             ColorDialogForeground.ShowDialog();
-            TextSet();
         }
 
         /// <summary>
@@ -187,19 +186,16 @@ namespace MemeGenerator
         /// <param name="e"></param>
         void ButtonBack_Click(object sender, EventArgs e)
         {
-            // после сохранения изображения, шаблон и так пустой, доп. подтверждение не требуется.
-            if (PictureBoxTemplate.Image != null)
-            {
-                var mbr = MessageBox.Show
-                (
-                    "Шаблон будет сброшен. Вы уверены?",
-                    "Подтверждение",
-                    MessageBoxButtons.YesNoCancel,
-                    MessageBoxIcon.Question
-                );
+            var mbr = MessageBox.Show
+            (
+                "Шаблон будет сброшен. Вы уверены?",
+                "Подтверждение",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question
+            );
 
-                if (mbr != DialogResult.Yes) return;
-            }
+            if (mbr != DialogResult.Yes) 
+                return;
 
             Back();
         }
@@ -215,7 +211,7 @@ namespace MemeGenerator
             Application.Exit();
         }
 
-        // обработчики для реализации поведения RadioButton-ов у кнопок стилей шрифта, контекстного меню
+        // обработчики для реализации поведения RadioButton-ов у кнопок стилей шрифта контекстного меню,
         // поскольку, одновременно может быть установлен только один стиль.
         void ToolStripMenuItemBold_Click(object sender, EventArgs e)
         {
