@@ -51,9 +51,10 @@ namespace MemeGenerator
                 {
                     // введенные размеры не должны превышать размеры шаблона (необязательно, но джаст ин кейс)
                     if (w <= PictureBoxTemplate.Image.Width && h <= PictureBoxTemplate.Image.Height)
-                    {
                         pb.ClientSize = new Size(w, h);
-                    }
+
+                    // задать размеры клиенсткой области полученного PictureBox, где у каждого масштабирование - автоматическое. 
+                    // Здесь логика немного обратная, чем у PictureBoxTemplate в ОПР я это разжевал.
                 }
             }
         }
