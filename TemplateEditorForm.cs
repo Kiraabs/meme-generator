@@ -90,10 +90,8 @@ namespace MemeGenerator
         void ToolStripMenuItemDelete_Click(object sender, EventArgs e)
         {
             // получение источника (label-а), к которому привязано контекстное меню
-            if (ContextMenuStripFont.SourceControl is Label pb)
-            {
-                pb.Dispose(); // удаление источника
-            }
+            if (ContextMenuStripFont.SourceControl is Label lb)
+                lb.Dispose(); // удаление источника
         }
 
         /// <summary>
@@ -130,10 +128,8 @@ namespace MemeGenerator
         private void ToolStripMenuItemDeleteImg_Click(object sender, EventArgs e)
         {
             // аналогично удалению текста
-            if (ContextMenuStripImage.SourceControl is PictureBox source)
-            {
-                source.Dispose();
-            }
+            if (ContextMenuStripImage.SourceControl is PictureBox pb)
+                pb.Dispose();
         }
 
         /// <summary>
