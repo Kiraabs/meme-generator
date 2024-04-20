@@ -293,7 +293,6 @@
         private ToolStripTextBox ToolStripTextBoxFontSize;
         private ToolStripComboBox ToolStripComboBoxFontFamily;
         private ColorDialog ColorDialogForeground;
-        private ToolStripTextBox ToolStripForeColor;
         private ToolStripMenuItem ToolStripMenuItemForeColor;
         private ToolStripMenuItem toolStripMenuItem2;
         private ToolStripTextBox ToolStripTextBoxText;
