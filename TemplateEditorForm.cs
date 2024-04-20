@@ -261,6 +261,7 @@ namespace MemeGenerator
         void FontSet()
         {
             // в зависимости от выбранного стиля шрифта - создать шрифт с таким стилем.
+            // тупо, зато быстро.
             if (ToolStripMenuItemBold.Checked)
             {
                 font = new Font
