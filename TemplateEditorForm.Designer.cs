@@ -53,8 +53,6 @@
             ToolStripTextBoxWidth = new ToolStripTextBox();
             ToolStripTextBoxHeight = new ToolStripTextBox();
             ToolStripMenuItemDeleteImg = new ToolStripMenuItem();
-            ToolStripMenuItemProportional = new ToolStripMenuItem();
-            toolStripMenuItem5 = new ToolStripMenuItem();
             PanelItems.SuspendLayout();
             ContextMenuStripFont.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PictureBoxTemplate).BeginInit();
@@ -240,9 +238,9 @@
             // 
             // ContextMenuStripImage
             // 
-            ContextMenuStripImage.Items.AddRange(new ToolStripItem[] { ToolStripTextBoxWidth, ToolStripTextBoxHeight, ToolStripMenuItemDeleteImg, ToolStripMenuItemProportional });
+            ContextMenuStripImage.Items.AddRange(new ToolStripItem[] { ToolStripTextBoxWidth, ToolStripTextBoxHeight, ToolStripMenuItemDeleteImg });
             ContextMenuStripImage.Name = "ContextMenuStipImage";
-            ContextMenuStripImage.Size = new Size(180, 98);
+            ContextMenuStripImage.Size = new Size(181, 98);
             ContextMenuStripImage.Closed += ContextMenuStripImage_Closed;
             // 
             // ToolStripTextBoxWidth
@@ -260,23 +258,9 @@
             // ToolStripMenuItemDeleteImg
             // 
             ToolStripMenuItemDeleteImg.Name = "ToolStripMenuItemDeleteImg";
-            ToolStripMenuItemDeleteImg.Size = new Size(179, 22);
+            ToolStripMenuItemDeleteImg.Size = new Size(180, 22);
             ToolStripMenuItemDeleteImg.Text = "Удалить";
             ToolStripMenuItemDeleteImg.Click += ToolStripMenuItemDeleteImg_Click;
-            // 
-            // ToolStripMenuItemProportional
-            // 
-            ToolStripMenuItemProportional.CheckOnClick = true;
-            ToolStripMenuItemProportional.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem5 });
-            ToolStripMenuItemProportional.Name = "ToolStripMenuItemProportional";
-            ToolStripMenuItemProportional.Size = new Size(179, 22);
-            ToolStripMenuItemProportional.Text = "Пропорционально";
-            // 
-            // toolStripMenuItem5
-            // 
-            toolStripMenuItem5.Enabled = false;
-            toolStripMenuItem5.Name = "toolStripMenuItem5";
-            toolStripMenuItem5.Size = new Size(67, 22);
             // 
             // TemplateEditorForm
             // 
@@ -326,7 +310,5 @@
         private ToolStripMenuItem ToolStripMenuItemDeleteImg;
         private ToolStripTextBox ToolStripTextBoxWidth;
         private ToolStripTextBox ToolStripTextBoxHeight;
-        private ToolStripMenuItem ToolStripMenuItemProportional;
-        private ToolStripMenuItem toolStripMenuItem5;
     }
 }

@@ -45,16 +45,14 @@ namespace MemeGenerator
         {
             if (ContextMenuStripImage.SourceControl is PictureBox pb)
             {
-                // если получилось считать значение из TextBox-а ширины
-                if (int.TryParse(ToolStripTextBoxWidth.Text, out var w))
+                // если получилось считать значения ширины и высота из полей
+                if (int.TryParse(ToolStripTextBoxWidth.Text, out var w) &&
+                    int.TryParse(ToolStripTextBoxHeight.Text, out var h))
                 {
-                    if (int.TryParse(ToolStripTextBoxHeight.Text, out var h))
+                    // введенные размеры не должны превышать размеры шаблона (необязательно, но джаст ин кейс)
+                    if (w <= PictureBoxTemplate.Image.Width && h <= PictureBoxTemplate.Image.Height)
                     {
-                        if (w <= PictureBoxTemplate.Image.Width && h <= PictureBoxTemplate.Image.Height)
-                        {
-                            pb.ClientSize = new Size(w, h);
-
-                        }
+                        pb.ClientSize = new Size(w, h);
                     }
                 }
             }
@@ -315,20 +313,6 @@ namespace MemeGenerator
             {
                 ToolStripComboBoxFontFamily.Items.Add(item.Name);
             }
-        }
-
-        /// <summary>
-        /// Пропорционально изменяет размеры изображения.
-        /// </summary>
-        /// <param name="size"></param>
-        /// <param name="newW"></param>
-        /// <returns></returns>
-        static Bitmap ProportionalResize(Image img, int newW)
-        {
-            // ширина - константа и равна 800 (ширина PictureBox);
-            // высоту нужно пропорционально изменить, относительно ширины, формула:
-            // новая высота = исходная высота * новая ширина / исходная ширина
-            return new Bitmap(img, new Size(newW, img.Size.Height * newW / img.Size.Width));
         }
 
         /// <summary>
