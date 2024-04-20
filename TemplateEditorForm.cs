@@ -333,9 +333,6 @@ namespace MemeGenerator
                 case 3:
                     format = ImageFormat.Jpeg;
                     break;
-                case 4:
-                    format = ImageFormat.Gif;
-                    break;
             }
 
             PictureBoxTemplate.Image.Save(sfd.FileName, format);
