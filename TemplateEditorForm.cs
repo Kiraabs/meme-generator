@@ -146,7 +146,8 @@ namespace MemeGenerator
                 MessageBoxIcon.Question
             );
 
-            if (mbr != DialogResult.Yes) return;
+            if (mbr != DialogResult.Yes) 
+                return;
 
             var sfd = new SaveFileDialog
             {
