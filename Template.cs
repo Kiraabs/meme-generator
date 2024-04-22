@@ -30,7 +30,7 @@
         {
             dir = new(TemplateDirName);
             if (!dir.Exists) dir.Create();
-        }
+        } // jfjfjf
 
         /// <summary>
         /// Проверяет существование внешнего файла в корневой директории шаблонов.
